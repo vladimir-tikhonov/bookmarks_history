@@ -1,0 +1,43 @@
+{
+  "name": "bookmarks_history",
+  "version": "0.1.0",
+  "description": "Chrome extension which keeps track of all the changes you made to your bookmarks",
+  "scripts": {
+    "start": "NODE_ENV=development webpack --watch",
+    "build": "NODE_ENV=production webpack",
+    "generate_manifest": "node ./tools/generate_manifest.js",
+    "tslint": "tslint --project tsconfig.json",
+    "eslint": "eslint *.js tools/**/*.js src/**/*.js",
+    "lint": "npm run tslint && npm run eslint"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vladimir-tikhonov/bookmarks_history.git"
+  },
+  "keywords": [
+    "chrome",
+    "extension",
+    "bookmarks",
+    "history"
+  ],
+  "author": "Vladimir Tikhonov",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/vladimir-tikhonov/bookmarks_history/issues"
+  },
+  "homepage": "https://github.com/vladimir-tikhonov/bookmarks_history#readme",
+  "devDependencies": {
+    "@types/chrome": "0.0.64",
+    "eslint": "^4.19.1",
+    "eslint-config-airbnb-base": "^12.1.0",
+    "eslint-plugin-import": "^2.11.0",
+    "ts-loader": "^4.2.0",
+    "tslib": "^1.9.0",
+    "tslint": "^5.9.1",
+    "typescript": "^2.8.3",
+    "webpack": "^4.6.0",
+    "webpack-chrome-extension-reloader": "^0.6.7",
+    "webpack-cli": "^2.1.2",
+    "webpack-merge": "^4.1.2"
+  }
+}
