@@ -2,12 +2,10 @@
 
 start-dev:
 	$(MAKE) clean-build
-	$(MAKE) setup-build
 	npm start
 
 build:
 	$(MAKE) clean-build
-	$(MAKE) setup-build
 	npm run build
 	cd build; zip -r -T release.zip ./*; cd ..
 	du -h build/release.zip
@@ -17,8 +15,5 @@ build-ci:
 	$(MAKE) build
 
 clean-build:
-	rm -rf ./build/*
-
-setup-build:
-	mkdir -p build
-	npm run generate_manifest
+	rm -rf ./build
+	mkdir -p ./build

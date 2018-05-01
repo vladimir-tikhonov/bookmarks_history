@@ -3,6 +3,8 @@ const merge = require('webpack-merge');
 const ChromeExtensionReloader = require('webpack-chrome-extension-reloader');
 const BabelMinifyPlugin = require('babel-minify-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
+const GenerateJsonPlugin = require('generate-json-webpack-plugin');
+const manifestTemplate = require('./src/assets/manifest.template.json');
 
 const SOURCE_PATH = path.resolve(__dirname, 'src');
 const BUILD_PATH = path.resolve(__dirname, 'build');
@@ -56,6 +58,16 @@ const configureAssetsCopy = () => ({
     ],
 });
 
+const configureManifestGenerator = () => ({
+    plugins: [
+        new GenerateJsonPlugin('manifest.json', Object.assign(manifestTemplate, {
+            description: process.env.npm_package_description,
+            version: process.env.npm_package_version,
+            homepage_url: process.env.npm_package_homepage,
+        })),
+    ],
+});
+
 const addExtensionReloaderPlugin = () => {
     if (isProductionBuild()) {
         return {};
@@ -91,6 +103,7 @@ module.exports = merge(
     setResolveExtensions(),
     configureTypescriptLoader(),
     configureAssetsCopy(),
+    configureManifestGenerator(),
     addExtensionReloaderPlugin(),
     configureMinimizer(),
 );
