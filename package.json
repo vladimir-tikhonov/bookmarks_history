@@ -28,6 +28,7 @@
   "devDependencies": {
     "@types/chrome": "0.0.64",
     "babel-minify-webpack-plugin": "^0.3.1",
+    "clean-webpack-plugin": "^0.1.19",
     "copy-webpack-plugin": "^4.5.1",
     "eslint": "^4.19.1",
     "eslint-config-airbnb-base": "^12.1.0",

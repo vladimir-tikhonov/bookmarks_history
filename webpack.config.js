@@ -4,6 +4,8 @@ const ChromeExtensionReloader = require('webpack-chrome-extension-reloader');
 const BabelMinifyPlugin = require('babel-minify-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const GenerateJsonPlugin = require('generate-json-webpack-plugin');
+const CleanWebpackPlugin = require('clean-webpack-plugin');
+
 const manifestTemplate = require('./src/assets/manifest.template.json');
 
 const SOURCE_PATH = path.resolve(__dirname, 'src');
@@ -30,6 +32,12 @@ const setOutput = () => ({
         path: BUILD_PATH,
         filename: '[name].js',
     },
+});
+
+const configureCleanOutputFolderPlugin = () => ({
+    plugins: [
+        new CleanWebpackPlugin([BUILD_PATH]),
+    ],
 });
 
 const setResolveExtensions = () => ({
@@ -100,6 +108,7 @@ module.exports = merge(
     setSourceMaps(),
     setEntryPoints(),
     setOutput(),
+    configureCleanOutputFolderPlugin(),
     setResolveExtensions(),
     configureTypescriptLoader(),
     configureAssetsCopy(),

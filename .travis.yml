@@ -4,4 +4,6 @@ node_js:
 cache:
   directories:
     - "node_modules"
-script: make build-ci
+script:
+  - npm run lint
+  - npm run build
