@@ -1,6 +1,8 @@
 const path = require('path');
 const merge = require('webpack-merge');
 const ChromeExtensionReloader = require('webpack-chrome-extension-reloader');
+const BabelMinifyPlugin = require('babel-minify-webpack-plugin');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 const SOURCE_PATH = path.resolve(__dirname, 'src');
 const BUILD_PATH = path.resolve(__dirname, 'build');
@@ -11,9 +13,13 @@ const determineWebpackMode = () => ({
     mode: isProductionBuild() ? 'production' : 'development',
 });
 
+const setSourceMaps = () => ({
+    devtool: isProductionBuild() ? false : 'eval-source-map',
+});
+
 const setEntryPoints = () => ({
     entry: {
-        background: path.resolve(SOURCE_PATH, 'scripts', 'background.ts'),
+        background: path.join(SOURCE_PATH, 'scripts', 'background.ts'),
     },
 });
 
@@ -42,6 +48,14 @@ const configureTypescriptLoader = () => ({
     },
 });
 
+const configureAssetsCopy = () => ({
+    plugins: [
+        new CopyWebpackPlugin([
+            { from: path.join(SOURCE_PATH, 'assets', 'history.html'), to: BUILD_PATH },
+        ]),
+    ],
+});
+
 const addExtensionReloaderPlugin = () => {
     if (isProductionBuild()) {
         return {};
@@ -54,11 +68,29 @@ const addExtensionReloaderPlugin = () => {
     };
 };
 
+const configureMinimizer = () => {
+    if (!isProductionBuild()) {
+        return {};
+    }
+
+    return {
+        optimization: {
+            minimize: false,
+        },
+        plugins: [
+            new BabelMinifyPlugin(),
+        ],
+    };
+};
+
 module.exports = merge(
     determineWebpackMode(),
+    setSourceMaps(),
     setEntryPoints(),
     setOutput(),
     setResolveExtensions(),
     configureTypescriptLoader(),
+    configureAssetsCopy(),
     addExtensionReloaderPlugin(),
+    configureMinimizer(),
 );

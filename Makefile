@@ -21,8 +21,4 @@ clean-build:
 
 setup-build:
 	mkdir -p build
-	$(MAKE) build-assets
-
-build-assets:
-	cp src/pages/* ./build/
 	npm run generate_manifest
