@@ -40,8 +40,9 @@ const configureCleanOutputFolderPlugin = () => ({
     ],
 });
 
-const setResolveExtensions = () => ({
+const setResolveOptions = () => ({
     resolve: {
+        modules: [SOURCE_PATH, 'node_modules'],
         extensions: ['.ts', '.tsx', '.js'],
     },
 });
@@ -109,7 +110,7 @@ module.exports = merge(
     setEntryPoints(),
     setOutput(),
     configureCleanOutputFolderPlugin(),
-    setResolveExtensions(),
+    setResolveOptions(),
     configureTypescriptLoader(),
     configureAssetsCopy(),
     configureManifestGenerator(),

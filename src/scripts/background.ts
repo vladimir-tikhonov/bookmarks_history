@@ -1,13 +1,26 @@
+import { getBranch as getBookmarkBranch } from 'scripts/bookmarks';
+import { BookmarkCreatedV1, BookmarkRemovedV1 } from 'scripts/events';
+import { serialize as serializeEvent } from 'scripts/serialization';
+import { append as appendToStorage } from 'scripts/storage';
+
 chrome.browserAction.onClicked.addListener(() => {
     chrome.tabs.create({ url: chrome.extension.getURL('history.html') });
 });
 
-chrome.bookmarks.onCreated.addListener((id, bookmark) => {
-    window.console.log(['onCreated', id, bookmark]);
+chrome.bookmarks.onCreated.addListener(async (id, bookmark) => {
+    const branch = await getBookmarkBranch(bookmark.parentId);
+    const event = new BookmarkCreatedV1(id, bookmark.title, Date.now(), branch);
+    const serializedData = serializeEvent(event);
+    return appendToStorage(serializedData);
 });
 
-chrome.bookmarks.onRemoved.addListener((id, removeInfo) => {
-    window.console.log(['onRemoved', id, removeInfo]);
+chrome.bookmarks.onRemoved.addListener(async (id, removeInfo) => {
+    // TODO: https://github.com/DefinitelyTyped/DefinitelyTyped/pull/25451
+    const removedNode = (removeInfo as any).node as chrome.bookmarks.BookmarkTreeNode;
+    const branch = await getBookmarkBranch(removeInfo.parentId);
+    const event = new BookmarkRemovedV1(id, removedNode.title, Date.now(), branch);
+    const serializedData = serializeEvent(event);
+    return appendToStorage(serializedData);
 });
 
 chrome.bookmarks.onChanged.addListener((id, changeInfo) => {
@@ -16,8 +29,4 @@ chrome.bookmarks.onChanged.addListener((id, changeInfo) => {
 
 chrome.bookmarks.onMoved.addListener((id, moveInfo) => {
     window.console.log(['onMoved', id, moveInfo]);
-});
-
-chrome.bookmarks.onChildrenReordered.addListener((id, reorderInfo) => {
-    window.console.log(['onChildrenReordered', id, reorderInfo]);
 });

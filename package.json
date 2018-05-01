@@ -42,5 +42,8 @@
     "webpack-chrome-extension-reloader": "^0.6.7",
     "webpack-cli": "^2.1.2",
     "webpack-merge": "^4.1.2"
+  },
+  "dependencies": {
+    "chrome-promise": "^3.0.0"
   }
 }
