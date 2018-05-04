@@ -15,8 +15,7 @@ chrome.bookmarks.onCreated.addListener(async (id, bookmark) => {
 });
 
 chrome.bookmarks.onRemoved.addListener(async (id, removeInfo) => {
-    // TODO: https://github.com/DefinitelyTyped/DefinitelyTyped/pull/25451
-    const removedNode = (removeInfo as any).node as chrome.bookmarks.BookmarkTreeNode;
+    const removedNode = removeInfo.node;
     const branch = await getBookmarkBranch(removeInfo.parentId);
     const event = new BookmarkRemovedV1(id, removedNode.title, Date.now(), branch);
     const serializedData = serializeEvent(event);
