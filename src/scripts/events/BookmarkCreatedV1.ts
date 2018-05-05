@@ -1,13 +1,12 @@
-import { IBookmarkBranch } from 'scripts/bookmarks';
+import { IBookmarkBasicInfo } from 'scripts/bookmarks';
 
 export default class BookmarkCreatedV1 {
     public static handle = 'BookmarkCreatedV1';
 
     public constructor(
-        public id: string,
-        public title: string,
+        public info: IBookmarkBasicInfo,
+        public branchInfo: IBookmarkBasicInfo[],
         public timestamp: number,
-        public branch: IBookmarkBranch,
     ) {}
 
     public getHandle() {

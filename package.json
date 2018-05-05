@@ -38,7 +38,7 @@
     "tslib": "^1.9.0",
     "tslint": "^5.10.0",
     "typescript": "^2.8.3",
-    "webpack": "^4.6.0",
+    "webpack": "^4.7.0",
     "webpack-chrome-extension-reloader": "^0.6.7",
     "webpack-cli": "^2.1.2",
     "webpack-merge": "^4.1.2"

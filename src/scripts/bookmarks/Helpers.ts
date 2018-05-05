@@ -1,21 +1,68 @@
 import bookmarksApi from './Api';
 
-export type IBookmarkBranch = IBookmarkBranchEntry[];
+const ROOT_NODE_ID = '0';
 
-interface IBookmarkBranchEntry {
+export interface IBookmarkBasicInfo {
     id: string;
     title: string;
+    url?: string;
+    parentId?: string;
+    isFolder: boolean;
 }
 
-export async function getBranch(nodeId: string | undefined) {
-    const branch: IBookmarkBranch = [];
+export function getBasicInfo(bookmarkNode: chrome.bookmarks.BookmarkTreeNode): IBookmarkBasicInfo {
+    return {
+        id: bookmarkNode.id,
+        title: bookmarkNode.title,
+        url: bookmarkNode.url,
+        parentId: bookmarkNode.parentId,
+        isFolder: !bookmarkNode.url,
+    };
+}
 
-    let currentNodeId = nodeId;
-    while (currentNodeId && currentNodeId !== '0') {
-        const [parentNode] = await bookmarksApi.get(currentNodeId);
-        branch.push({ id: parentNode.id, title: parentNode.title });
-        currentNodeId = parentNode.parentId;
+export async function getBasicInfoById(bookmarkNodeId: string) {
+    const bookmarkNode = await getBookmarkNodeById(bookmarkNodeId);
+    return getBasicInfo(bookmarkNode);
+}
+
+export async function getBranchBasicInfoByLeafId(leafNodeId: string) {
+    const branch: IBookmarkBasicInfo[] = [];
+
+    let currentNodeId = leafNodeId;
+    while (true) {
+        const currentNode = await getBookmarkNodeById(currentNodeId);
+        branch.push(getBasicInfo(currentNode));
+        if (!currentNode.parentId || currentNode.parentId === ROOT_NODE_ID) {
+            break;
+        }
+
+        currentNodeId = currentNode.parentId;
     }
 
     return branch;
+}
+
+export async function getBasicInfoForTheEntireTree() {
+    const [rootNode] = await bookmarksApi.getTree();
+    const allNodes = flattenBookmarkTree(rootNode);
+
+    return allNodes.map((bookmarkNode) => getBasicInfo(bookmarkNode));
+}
+
+async function getBookmarkNodeById(bookmarkNodeId: string) {
+    const [bookmarkNode] = await bookmarksApi.get(bookmarkNodeId);
+    return bookmarkNode;
+}
+
+function flattenBookmarkTree(rootNode: chrome.bookmarks.BookmarkTreeNode) {
+    if (!rootNode.children) {
+        return [rootNode];
+    }
+
+    const result = [rootNode];
+    for (const childNode of rootNode.children) {
+        result.push(...flattenBookmarkTree(childNode));
+    }
+
+    return result;
 }

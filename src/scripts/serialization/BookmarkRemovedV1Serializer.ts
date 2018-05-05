@@ -2,18 +2,16 @@ import { BookmarkRemovedV1 } from 'scripts/events';
 
 export function serialize(event: BookmarkRemovedV1) {
     return {
-        id: event.id,
-        title: event.title,
+        info: event.info,
+        branchInfo: event.branchInfo,
         timestamp: event.timestamp,
-        branch: event.branch,
     };
 }
 
 export function deserialize(payload: any) {
     return new BookmarkRemovedV1(
-        payload.id,
-        payload.title,
+        payload.info,
+        payload.branchInfo,
         payload.timestamp,
-        payload.branch,
     );
 }
