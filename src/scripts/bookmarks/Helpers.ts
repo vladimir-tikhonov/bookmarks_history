@@ -1,4 +1,4 @@
-import bookmarksApi from './Api';
+import chromep from 'chrome-promise';
 
 const ROOT_NODE_ID = '0';
 
@@ -43,14 +43,14 @@ export async function getBranchBasicInfoByLeafId(leafNodeId: string) {
 }
 
 export async function getBasicInfoForTheEntireTree() {
-    const [rootNode] = await bookmarksApi.getTree();
+    const [rootNode] = await chromep.bookmarks.getTree();
     const allNodes = flattenBookmarkTree(rootNode);
 
     return allNodes.map((bookmarkNode) => getBasicInfo(bookmarkNode));
 }
 
 async function getBookmarkNodeById(bookmarkNodeId: string) {
-    const [bookmarkNode] = await bookmarksApi.get(bookmarkNodeId);
+    const [bookmarkNode] = await chromep.bookmarks.get(bookmarkNodeId);
     return bookmarkNode;
 }
 

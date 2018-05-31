@@ -1,11 +1,11 @@
-import storageApi from './Api';
+import chromep from 'chrome-promise';
 
 const STORAGE_KEY = 'history';
 
 export async function appendEvent(data: object) {
     const existingEntries = await getAllEventsUnparsed();
     existingEntries.push(JSON.stringify(data));
-    return storageApi.set({ [STORAGE_KEY]: existingEntries });
+    return chromep.storage.local.set({ [STORAGE_KEY]: existingEntries });
 }
 
 export async function getAllEvents() {
@@ -14,6 +14,6 @@ export async function getAllEvents() {
 }
 
 async function getAllEventsUnparsed(): Promise<string[]> {
-    const requestResult = await storageApi.get(STORAGE_KEY);
+    const requestResult = await chromep.storage.local.get(STORAGE_KEY);
     return requestResult[STORAGE_KEY] || [];
 }

@@ -20,3 +20,6 @@ node_modules/
 
 # output folder
 build/
+
+# editors' settings
+.vscode

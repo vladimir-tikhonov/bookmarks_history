@@ -32,18 +32,18 @@
     "copy-webpack-plugin": "^4.5.1",
     "eslint": "^4.19.1",
     "eslint-config-airbnb-base": "^12.1.0",
-    "eslint-plugin-import": "^2.11.0",
+    "eslint-plugin-import": "^2.12.0",
     "generate-json-webpack-plugin": "^0.3.1",
-    "ts-loader": "^4.2.0",
-    "tslib": "^1.9.0",
+    "ts-loader": "^4.3.0",
+    "tslib": "^1.9.2",
     "tslint": "^5.10.0",
-    "typescript": "^2.8.3",
-    "webpack": "^4.7.0",
-    "webpack-chrome-extension-reloader": "^0.6.7",
-    "webpack-cli": "^2.1.2",
+    "typescript": "^2.8.4",
+    "webpack": "^4.10.2",
+    "webpack-chrome-extension-reloader": "^0.6.9",
+    "webpack-cli": "^2.1.4",
     "webpack-merge": "^4.1.2"
   },
   "dependencies": {
-    "chrome-promise": "^3.0.0"
+    "chrome-promise": "^3.0.1"
   }
 }
