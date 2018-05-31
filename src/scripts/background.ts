@@ -4,7 +4,7 @@ import {
     getBranchBasicInfoByLeafId,
     getBasicInfoForTheEntireTree,
 } from 'scripts/bookmarks';
-import { BookmarkCreatedV1, BookmarkRemovedV1, BookmarkChangedV1 } from 'scripts/events';
+import { BookmarkCreatedV1, BookmarkRemovedV1, BookmarkChangedV1, BookmarkMovedV1 } from 'scripts/events';
 import { serializeEvent } from 'scripts/serialization';
 import {
     appendEvent as appendEventToStorage,
@@ -29,6 +29,7 @@ chrome.bookmarks.onRemoved.addListener(async (_removedBookmarkId, removeInfo) =>
     await dumpTheEntireBookmarkTree();
     const bookmarkInfo = getBasicInfo(removeInfo.node);
     const branchInfo = await getBranchBasicInfoByLeafId(removeInfo.parentId);
+
     const event = new BookmarkRemovedV1(bookmarkInfo, branchInfo, Date.now());
     const serializedData = serializeEvent(event);
     return appendEventToStorage(serializedData);
@@ -45,13 +46,20 @@ chrome.bookmarks.onChanged.addListener(async (changedBookmarkId, _changeInfo) =>
     await dumpTheEntireBookmarkTree();
     const bookmarkInfo = await getBasicInfoById(changedBookmarkId);
     const branchInfo = await getBranchBasicInfoByLeafId(bookmarkInfo.parentId!);
+
     const event = new BookmarkChangedV1(bookmarkInfo, previousBookmarkInfo, branchInfo, Date.now());
     const serializedData = serializeEvent(event);
     return appendEventToStorage(serializedData);
 });
 
-chrome.bookmarks.onMoved.addListener((id, moveInfo) => {
-    window.console.log(['onMoved', id, moveInfo]);
+chrome.bookmarks.onMoved.addListener(async (id, moveInfo) => {
+    const bookmarkInfo = await getBasicInfoById(id);
+    const oldBranchInfo = await getBranchBasicInfoByLeafId(moveInfo.oldParentId);
+    const newBranchInfo = await getBranchBasicInfoByLeafId(moveInfo.parentId);
+
+    const event = new BookmarkMovedV1(bookmarkInfo, oldBranchInfo, newBranchInfo, Date.now());
+    const serializedData = serializeEvent(event);
+    return appendEventToStorage(serializedData);
 });
 
 async function dumpTheEntireBookmarkTree() {
