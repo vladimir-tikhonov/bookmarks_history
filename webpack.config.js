@@ -24,6 +24,7 @@ const setSourceMaps = () => ({
 const setEntryPoints = () => ({
     entry: {
         background: path.join(SOURCE_PATH, 'scripts', 'background.ts'),
+        ui: path.join(SOURCE_PATH, 'scripts', 'ui', 'index.tsx'),
     },
 });
 
@@ -62,7 +63,7 @@ const configureTypescriptLoader = () => ({
 const configureAssetsCopy = () => ({
     plugins: [
         new CopyWebpackPlugin([
-            { from: path.join(SOURCE_PATH, 'assets', 'history.html'), to: BUILD_PATH },
+            { from: path.join(SOURCE_PATH, 'assets', 'ui.html'), to: BUILD_PATH },
         ]),
     ],
 });

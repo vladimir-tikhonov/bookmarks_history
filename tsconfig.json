@@ -5,7 +5,9 @@
     "importHelpers": true,
     "sourceMap": true,
     "moduleResolution": "node",
+    "allowSyntheticDefaultImports": true,
     "baseUrl": "./src/",
+    "jsx": "react",
 
     "strict": true,
     "noUnusedLocals": true,

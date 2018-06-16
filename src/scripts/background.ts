@@ -13,7 +13,7 @@ import {
 } from 'scripts/storage';
 
 chrome.browserAction.onClicked.addListener(() => {
-    chrome.tabs.create({ url: chrome.extension.getURL('history.html') });
+    chrome.tabs.create({ url: chrome.extension.getURL('ui.html') });
 });
 
 chrome.bookmarks.onCreated.addListener(async (_newBookmarkId, newBookmarkNode) => {

@@ -4,7 +4,7 @@ import * as bookmarkRemovedV1Serializer from './BookmarkRemovedV1Serializer';
 import * as bookmarkChangedV1Serializer from './BookmarkChangedV1Serializer';
 import * as bookmarkMovedV1Serializer from './BookmarkMovedV1Serializer';
 
-type SerializableEvent = BookmarkCreatedV1 | BookmarkRemovedV1 | BookmarkChangedV1 | BookmarkMovedV1;
+export type SerializableEvent = BookmarkCreatedV1 | BookmarkRemovedV1 | BookmarkChangedV1 | BookmarkMovedV1;
 interface ISerializer {
     serialize(event: SerializableEvent): object;
     deserialize(data: object): SerializableEvent;
