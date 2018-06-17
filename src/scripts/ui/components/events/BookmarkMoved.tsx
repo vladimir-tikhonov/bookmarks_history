@@ -18,6 +18,7 @@ export default function BookmarkMoved({ event }: IBookmarkMovedProps) {
                 icon={movedIconUrl}
                 eventDisplayName="moved"
                 bookmarkTitle={event.info.title}
+                isFolder={event.info.isFolder}
                 timestamp={event.timestamp}
             />
             <ul className="properties">

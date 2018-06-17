@@ -24,7 +24,7 @@ function renderOldTitle(event: BookmarkChangedV1) {
 }
 
 function shouldDisplayUrlChanges(event: BookmarkChangedV1) {
-    return event.newInfo.url !== event.oldInfo.url;
+    return !event.newInfo.isFolder && event.newInfo.url !== event.oldInfo.url;
 }
 
 function renderUrlChanges(event: BookmarkChangedV1) {
@@ -50,6 +50,7 @@ export default function BookmarkChanged({ event }: IBookmarkChangedProps) {
                 icon={changedIconUrl}
                 eventDisplayName="changed"
                 bookmarkTitle={event.newInfo.title}
+                isFolder={event.newInfo.isFolder}
                 timestamp={event.timestamp}
             />
             <ul className="properties">
