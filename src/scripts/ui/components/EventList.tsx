@@ -4,6 +4,8 @@ import { BookmarkCreatedV1, BookmarkRemovedV1, BookmarkChangedV1, BookmarkMovedV
 import { BookmarkCreated, BookmarkRemoved, BookmarkChanged, BookmarkMoved } from 'scripts/ui/components/events';
 import { SerializableEvent } from 'scripts/serialization';
 
+import './styles/EventList';
+
 interface IEventListProps {
     events: SerializableEvent[];
 }
@@ -29,9 +31,15 @@ function renderEvent(event: SerializableEvent) {
 }
 
 export default function EventList(props: IEventListProps) {
+    if (props.events.length === 0) {
+        return <h1 className="empty-placeholder">Nothing here yet :)</h1>;
+    }
+
     return (
-        <section>
-            {props.events.map(renderEvent)}
+        <section className="event-list">
+            <ul className="list">
+                {props.events.map(renderEvent)}
+            </ul>
         </section>
     );
 }

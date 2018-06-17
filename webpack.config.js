@@ -5,6 +5,7 @@ const BabelMinifyPlugin = require('babel-minify-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const GenerateJsonPlugin = require('generate-json-webpack-plugin');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 const manifestTemplate = require('./src/assets/manifest.template.json');
 
@@ -44,7 +45,7 @@ const configureCleanOutputFolderPlugin = () => ({
 const setResolveOptions = () => ({
     resolve: {
         modules: [SOURCE_PATH, 'node_modules'],
-        extensions: ['.ts', '.tsx', '.js'],
+        extensions: ['.ts', '.tsx', '.js', '.scss'],
     },
 });
 
@@ -53,11 +54,38 @@ const configureTypescriptLoader = () => ({
         rules: [
             {
                 test: /\.(ts|tsx)$/,
-                loader: 'ts-loader',
                 include: [SOURCE_PATH],
+                use: [
+                    {
+                        loader: 'ts-loader',
+                    },
+                ],
             },
         ],
     },
+});
+
+const configureStylesLoader = () => ({
+    module: {
+        rules: [
+            {
+                test: /\.scss$/,
+                include: [SOURCE_PATH],
+                use: [
+                    {
+                        loader: MiniCssExtractPlugin.loader,
+                    },
+                    {
+                        loader: 'css-loader',
+                    },
+                    {
+                        loader: 'sass-loader',
+                    },
+                ],
+            },
+        ],
+    },
+    plugins: [new MiniCssExtractPlugin()],
 });
 
 const configureAssetsCopy = () => ({
@@ -113,6 +141,7 @@ module.exports = merge(
     configureCleanOutputFolderPlugin(),
     setResolveOptions(),
     configureTypescriptLoader(),
+    configureStylesLoader(),
     configureAssetsCopy(),
     configureManifestGenerator(),
     addExtensionReloaderPlugin(),

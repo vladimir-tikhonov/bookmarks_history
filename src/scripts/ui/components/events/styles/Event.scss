@@ -1,0 +1,9 @@
+.event-container {
+    >.properties {
+        list-style: disc;
+
+        >.property {
+            word-wrap: break-word;
+        }
+    }
+}

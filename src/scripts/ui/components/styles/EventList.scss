@@ -1,0 +1,25 @@
+.event-list {
+    $highlight-color: rgba(0, 0, 0, .05);
+    $border-color: #dee2e6;
+
+    >.list {
+        display: flex;
+        flex-direction: column;
+        list-style: none;
+        margin: 0 2em;
+        padding: 0;
+    }
+
+    >.list >.event-container {
+        border-bottom: 1px solid $border-color;
+        padding: 1em .5em;
+
+        &:nth-child(2n) {
+            background-color: $highlight-color;
+        }
+    }
+}
+
+.empty-placeholder {
+    align-self: center;
+}
