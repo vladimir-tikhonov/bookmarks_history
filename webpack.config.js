@@ -10,6 +10,7 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const manifestTemplate = require('./src/assets/manifest.template.json');
 
 const SOURCE_PATH = path.resolve(__dirname, 'src');
+const ASSETS_PATH = path.resolve(SOURCE_PATH, 'assets');
 const BUILD_PATH = path.resolve(__dirname, 'build');
 
 const isProductionBuild = () => process.env.NODE_ENV === 'production';
@@ -88,10 +89,32 @@ const configureStylesLoader = () => ({
     plugins: [new MiniCssExtractPlugin()],
 });
 
+const configureIconsLoader = () => ({
+    module: {
+        rules: [
+            {
+                test: /\.svg$/,
+                include: [SOURCE_PATH],
+                use: [
+                    {
+                        loader: 'file-loader',
+                        options: {
+                            emitFile: false,
+                            name: '[name].[ext]',
+                            outputPath: 'icons',
+                        },
+                    },
+                ],
+            },
+        ],
+    },
+});
+
 const configureAssetsCopy = () => ({
     plugins: [
         new CopyWebpackPlugin([
-            { from: path.join(SOURCE_PATH, 'assets', 'ui.html'), to: BUILD_PATH },
+            { from: path.join(ASSETS_PATH, 'ui.html'), to: BUILD_PATH },
+            { from: path.join(ASSETS_PATH, 'icons'), to: path.join(BUILD_PATH, 'icons') },
         ]),
     ],
 });
@@ -142,6 +165,7 @@ module.exports = merge(
     setResolveOptions(),
     configureTypescriptLoader(),
     configureStylesLoader(),
+    configureIconsLoader(),
     configureAssetsCopy(),
     configureManifestGenerator(),
     addExtensionReloaderPlugin(),

@@ -4,6 +4,7 @@ import { BookmarkMovedV1 } from 'scripts/events';
 import EventHeader from './EventHeader';
 import BookmarkLocation from './BookmarkLocation';
 
+import movedIconUrl from 'assets/icons/icon-moved.svg';
 import './styles/Event';
 
 interface IBookmarkMovedProps {
@@ -13,7 +14,12 @@ interface IBookmarkMovedProps {
 export default function BookmarkMoved({ event }: IBookmarkMovedProps) {
     return (
         <li className="event-container">
-            <EventHeader eventDisplayName="moved" bookmarkTitle={event.info.title} timestamp={event.timestamp} />
+            <EventHeader
+                icon={movedIconUrl}
+                eventDisplayName="moved"
+                bookmarkTitle={event.info.title}
+                timestamp={event.timestamp}
+            />
             <ul className="properties">
                 <li className="property">
                     Old location: <BookmarkLocation location={event.oldBranchInfo} />

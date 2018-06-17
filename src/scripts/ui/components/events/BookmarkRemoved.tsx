@@ -4,6 +4,7 @@ import { BookmarkRemovedV1 } from 'scripts/events';
 import EventHeader from './EventHeader';
 import BookmarkLocation from './BookmarkLocation';
 
+import removedIconUrl from 'assets/icons/icon-removed.svg';
 import './styles/Event';
 
 interface IBookmarkRemovedProps {
@@ -13,7 +14,12 @@ interface IBookmarkRemovedProps {
 export default function BookmarkRemoved({ event }: IBookmarkRemovedProps) {
     return (
         <li className="event-container">
-            <EventHeader eventDisplayName="removed" bookmarkTitle={event.info.title} timestamp={event.timestamp} />
+            <EventHeader
+                icon={removedIconUrl}
+                eventDisplayName="removed"
+                bookmarkTitle={event.info.title}
+                timestamp={event.timestamp}
+            />
             <ul className="properties">
                 <li className="property">
                     Location: <BookmarkLocation location={event.branchInfo} />

@@ -1,9 +1,21 @@
 .event-header {
-    >.time {
-        font-style: italic;
+    align-items: center;
+    display: flex;
+    flex-direction: row;
+
+    >.icon {
+        height: 1.5em;
+        margin-right: .5em;
+        width: 1.5em;
     }
 
-    >.title {
-        font-weight: bold;
+    >.description {
+        >.time {
+            font-style: italic;
+        }
+
+        >.title {
+            font-weight: bold;
+        }
     }
 }

@@ -4,6 +4,7 @@ import { BookmarkChangedV1 } from 'scripts/events';
 import EventHeader from './EventHeader';
 import BookmarkLocation from './BookmarkLocation';
 
+import changedIconUrl from 'assets/icons/icon-changed.svg';
 import './styles/Event';
 
 interface IBookmarkChangedProps {
@@ -45,7 +46,12 @@ function renderUrlChanges(event: BookmarkChangedV1) {
 export default function BookmarkChanged({ event }: IBookmarkChangedProps) {
     return (
         <li className="event-container">
-            <EventHeader eventDisplayName="changed" bookmarkTitle={event.newInfo.title} timestamp={event.timestamp} />
+            <EventHeader
+                icon={changedIconUrl}
+                eventDisplayName="changed"
+                bookmarkTitle={event.newInfo.title}
+                timestamp={event.timestamp}
+            />
             <ul className="properties">
                 {shouldDisplayOldTitle(event) && renderOldTitle(event)}
                 {shouldDisplayUrlChanges(event) && renderUrlChanges(event)}
